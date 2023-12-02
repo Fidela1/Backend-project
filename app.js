@@ -1,8 +1,8 @@
-
 const express = require('express');
 const mongoose = require('mongoose');
+const routes = require('./src/routes/index')
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3080;
 const dbURL = process.env.DATABASE_URL || 'mongodb://0.0.0.0:27017/mydb';  
 
 mongoose
@@ -14,8 +14,10 @@ mongoose
     console.error('Error connecting to the database:', error);
   });
 
-// Rest of your Express setup here
 const app = express();
+
+app.use(express.json());
+app.use('/api/v1', routes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
