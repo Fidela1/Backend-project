@@ -1,14 +1,14 @@
 const User = require('../models/users');
 
     const signup = async (req, res, next) => {
-        const user = new User({
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password,
-        });
-    
+        const { username, email, password } = req.body;
         try {
-            const newUser = await user.save();
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email already registered.' });
+        }
+        
+        const newUser = new User({ username, email, password })
             res.json({
                 status: 'success',
                 statusCode: 201,
