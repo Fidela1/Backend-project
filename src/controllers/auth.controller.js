@@ -1,17 +1,27 @@
+require('dotenv').config();
 const User = require('../models/users');
+const jwt = require('jsonwebtoken');
+
+const signToken = id => {
+    return jwt.sign({ id }, process.env.SECRET_KEY, {
+        expiresIn: process.env.JWT_EXPIRES_IN
+    });
+}
 
     const signup = async (req, res, next) => {
-        const user = new User({
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password,
-        });
-    
+        const { username, email, password } = req.body;
         try {
-            const newUser = await user.save();
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email already registered.' });
+        }
+        
+        const newUser = new User({ username, email, password })
+        const token = signToken(newUser._id)
             res.json({
                 status: 'success',
                 statusCode: 201,
+                token,
                 data: {
                     user: newUser
                 }
@@ -24,8 +34,11 @@ const User = require('../models/users');
             });
         }
     };
-  
+  const login = async (req, res) => {
+    const { email, password } = req.body;
+  }
 
 module.exports = {
     signup,
+    login,
 };
