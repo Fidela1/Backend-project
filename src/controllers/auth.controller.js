@@ -13,8 +13,8 @@ const signToken = id => {
     const signup = async (req, res) => {
         const { username, email, password } = req.body;
         try {
-      
-        const newUser = new User({ username, email, password })
+        const hashedPassword = await bcrypt.hash(password, 6);
+        const newUser = new User({ username, email, password:hashedPassword })
         await newUser.save();
 
         
