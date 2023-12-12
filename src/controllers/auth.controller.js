@@ -13,13 +13,10 @@ const signToken = id => {
     const signup = async (req, res) => {
         const { username, email, password } = req.body;
         try {
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: 'Email already registered.' });
-        }
-        const hashedPassword = await bcrypt.hash(password, 8);
-        const newUser = new User({ username, email, password: hashedPassword })
+      
+        const newUser = new User({ username, email, password })
         await newUser.save();
+
         
             res.json({
                 status: 'success',
