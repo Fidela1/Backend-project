@@ -11,10 +11,6 @@ const signToken = id => {
     const signup = async (req, res, next) => {
         const { username, email, password } = req.body;
         try {
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: 'Email already registered.' });
-        }
         
         const newUser = new User({ username, email, password })
         const token = signToken(newUser._id)
