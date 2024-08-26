@@ -9,3 +9,7 @@ const existingUser = await User.findOne({ email });
         next();
     }
     module.exports = checkIfUserExist;
+
+
+
+
