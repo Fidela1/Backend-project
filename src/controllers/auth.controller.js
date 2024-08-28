@@ -11,10 +11,10 @@ const signToken = id => {
 }
 
     const signup = async (req, res) => {
-        const { username, email, password } = req.body;
+        const { firstname,lastname, email, password } = req.body;
         try {
         const hashedPassword = await bcrypt.hash(password, 6);
-        const newUser = new User({ username, email, password:hashedPassword })
+        const newUser = new User({ firstname,lastname, email, password:hashedPassword })
         await newUser.save();
 
         
